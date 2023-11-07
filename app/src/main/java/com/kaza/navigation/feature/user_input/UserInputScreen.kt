@@ -16,14 +16,18 @@ import androidx.compose.ui.unit.sp
 import com.kaza.navigation.R
 import com.kaza.navigation.feature.user_input.data.UserDataUiEvents
 import com.kaza.navigation.feature.user_input.data.UserInputViewModel
+import com.kaza.navigation.feature.welcome.WelcomeScreen
 import com.kaza.navigation.ui.AnimalCard
 import com.kaza.navigation.ui.ButtonComponent
 import com.kaza.navigation.ui.TextComponent
 import com.kaza.navigation.ui.TextFieldComponent
 import com.kaza.navigation.ui.TopBar
+import com.kaza.navigation.ui.screens.FunFactsNavigationGraph
 
 @Composable
-fun UserInputScreen(userInputViewModel: UserInputViewModel) {
+fun UserInputScreen(
+    userInputViewModel: UserInputViewModel,
+    showWelcomeScreen: (valuePair: Pair<String, String>)-> Unit){
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -72,10 +76,14 @@ fun UserInputScreen(userInputViewModel: UserInputViewModel) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (userInputViewModel.isValidState() ){
+            if (userInputViewModel.isValidState()) {
                 ButtonComponent(
                     goToDetailScreen = {
-
+                        showWelcomeScreen(
+                            Pair(
+                                userInputViewModel.uiState.value.nameEntered,
+                                userInputViewModel.uiState.value.animalSelected)
+                        )
                     }
                 )
             }
@@ -88,5 +96,5 @@ fun UserInputScreen(userInputViewModel: UserInputViewModel) {
 @Preview
 @Composable
 fun UserInputScreenPreview() {
-    UserInputScreen(UserInputViewModel())
+    UserInputScreen(UserInputViewModel()) { /* Define your action here */ }
 }
